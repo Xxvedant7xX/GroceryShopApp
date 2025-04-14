@@ -16,7 +16,7 @@ class IntroPage extends StatelessWidget {
           // logo
           Padding(
             padding: const EdgeInsets.only(left:80, right: 80, bottom: 40, top: 110),
-            child: Image.asset('lib/images/avocado.png'),
+            child: Image.asset('lib/images/fruitbasket.jpg'),
           ),
 
           // deliver groceries text

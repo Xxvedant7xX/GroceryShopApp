@@ -3,6 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:groceryshopapp/components/grocery_item_tile.dart';
+import 'package:groceryshopapp/model/cart_model.dart';
+import 'package:provider/provider.dart';
+
+import 'cart_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,6 +14,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(context) {
+          return CartPage();
+          },
+         ),
+        ),
+        child: Icon(Icons.shopping_cart),
+        ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,15 +74,30 @@ class HomePage extends StatelessWidget {
               ),
           ),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
+            child: Consumer<CartModel>(
+              builder:(context, value, child) {
+              return GridView.builder(
+                itemCount: value.shopItems.length,
+                padding: EdgeInsets.all(12),
+              gridDelegate: 
+               const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1/1.3,
+                ),
                  itemBuilder:(context, index) {
                    return GroceryItemTile(
-                    
+                    itemName: value.shopItems[index][0],
+                    itemPrice: value.shopItems[index][1],
+                    imagePath: value.shopItems[index][2],
+                    color: value.shopItems[index][3],
+                    onPressed: () {
+                      Provider.of<CartModel>(context, listen: false)
+                      .addItemToCart(index);
+                    },
                    );
                  },
-             )
+             );
+            },)
             )
           ],
         ),
